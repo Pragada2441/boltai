@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSense - AI Crop Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🌾</span>
+                <h1>AgriSense</h1>
+            </div>
+            <p class="tagline">Smart Farming, Better Harvest</p>
+        </div>
+    </header>
+
+    <!-- Language Selector -->
+    <div class="language-selector">
+        <button class="lang-btn active" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="hi">हिंदी</button>
+        <button class="lang-btn" data-lang="ta">தமிழ்</button>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Voice Input Section -->
+        <section class="voice-section">
+            <div class="container">
+                <h2 data-translate="voice-title">🎤 Voice Input Available</h2>
+                <p data-translate="voice-subtitle">Speak your soil and weather details</p>
+                <button class="voice-btn" id="voiceBtn">
+                    <span class="voice-icon">🎙️</span>
+                    <span data-translate="start-voice">Start Voice Input</span>
+                </button>
+                <p class="voice-status" id="voiceStatus"></p>
+            </div>
+        </section>
+
+        <!-- Input Form Section -->
+        <section class="form-section">
+            <div class="container">
+                <h2 data-translate="form-title">📝 Enter Your Field Details</h2>
+
+                <form id="cropForm">
+                    <!-- Soil Nutrients -->
+                    <div class="form-group">
+                        <label for="nitrogen">
+                            <span class="icon">🧪</span>
+                            <span data-translate="nitrogen">Nitrogen (N)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="nitrogen" name="nitrogen"
+                                   min="0" max="200" step="1" required
+                                   placeholder="0-200 kg/ha">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="nitrogen-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="nitrogen-help">
+                            Typical range: 0-200 kg/ha
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phosphorus">
+                            <span class="icon">⚗️</span>
+                            <span data-translate="phosphorus">Phosphorus (P)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="phosphorus" name="phosphorus"
+                                   min="0" max="200" step="1" required
+                                   placeholder="0-200 kg/ha">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="phosphorus-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="phosphorus-help">
+                            Typical range: 0-200 kg/ha
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="potassium">
+                            <span class="icon">🔬</span>
+                            <span data-translate="potassium">Potassium (K)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="potassium" name="potassium"
+                                   min="0" max="250" step="1" required
+                                   placeholder="0-250 kg/ha">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="potassium-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="potassium-help">
+                            Typical range: 0-250 kg/ha
+                        </small>
+                    </div>
+
+                    <!-- Weather Conditions -->
+                    <div class="form-group">
+                        <label for="temperature">
+                            <span class="icon">🌡️</span>
+                            <span data-translate="temperature">Temperature (°C)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="temperature" name="temperature"
+                                   min="0" max="50" step="0.1" required
+                                   placeholder="0-50°C">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="temperature-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="temperature-help">
+                            Average temperature in Celsius
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="humidity">
+                            <span class="icon">💧</span>
+                            <span data-translate="humidity">Humidity (%)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="humidity" name="humidity"
+                                   min="0" max="100" step="0.1" required
+                                   placeholder="0-100%">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="humidity-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="humidity-help">
+                            Relative humidity percentage
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ph">
+                            <span class="icon">⚖️</span>
+                            <span data-translate="ph">Soil pH</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="ph" name="ph"
+                                   min="0" max="14" step="0.01" required
+                                   placeholder="3-10">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="ph-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="ph-help">
+                            Soil pH value (3-10, neutral is 7)
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="rainfall">
+                            <span class="icon">🌧️</span>
+                            <span data-translate="rainfall">Rainfall (mm)</span>
+                        </label>
+                        <div class="input-wrapper">
+                            <input type="number" id="rainfall" name="rainfall"
+                                   min="0" max="500" step="0.1" required
+                                   placeholder="0-500 mm">
+                            <div class="input-visual">
+                                <div class="visual-bar" id="rainfall-bar"></div>
+                            </div>
+                        </div>
+                        <small class="help-text" data-translate="rainfall-help">
+                            Annual rainfall in millimeters
+                        </small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span data-translate="get-recommendation">🌱 Get Crop Recommendation</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="container">
+                <h2 data-translate="results-title">🎯 Recommended Crops for Your Field</h2>
+                <div id="resultsContainer"></div>
+            </div>
+        </section>
+
+        <!-- Educational Section -->
+        <section class="education-section">
+            <div class="container">
+                <h2 data-translate="learn-title">📚 Learn More</h2>
+                <div class="education-grid">
+                    <div class="education-card">
+                        <div class="card-icon">🌱</div>
+                        <h3 data-translate="soil-health">Soil Health</h3>
+                        <p data-translate="soil-health-text">
+                            Understanding NPK values and pH helps you choose the right crop
+                        </p>
+                    </div>
+                    <div class="education-card">
+                        <div class="card-icon">🌦️</div>
+                        <h3 data-translate="climate">Climate Conditions</h3>
+                        <p data-translate="climate-text">
+                            Temperature, humidity, and rainfall affect crop growth
+                        </p>
+                    </div>
+                    <div class="education-card">
+                        <div class="card-icon">🚜</div>
+                        <h3 data-translate="best-practices">Best Practices</h3>
+                        <p data-translate="best-practices-text">
+                            Follow recommended guidelines for better yield
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p data-translate="footer-text">
+                © 2024 AgriSense - Empowering Farmers with AI Technology
+            </p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p data-translate="analyzing">Analyzing your field data...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
